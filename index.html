@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldShards - Tableur de Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-brand">
+                        <div class="logo">🌍⚔️</div>
+                        <h1>WorldShards - Tableur de Tracking</h1>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="exportBtn">
+                        📊 Exporter CSV
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="container">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="saisie">📝 Saisie de Données</button>
+                    <button class="nav-tab" data-tab="statistiques">📊 Statistiques</button>
+                    <button class="nav-tab" data-tab="analyse">🔍 Analyse</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Tab: Saisie de Données -->
+                <div id="saisie" class="tab-content active">
+                    <div class="section">
+                        <h2>Nouvelle Entrée</h2>
+                        
+                        <form id="dataForm" class="data-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="mapSize">Taille de Map</label>
+                                    <select id="mapSize" class="form-control" required>
+                                        <option value="">Sélectionner...</option>
+                                        <option value="Petite">Petite</option>
+                                        <option value="Moyenne">Moyenne</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Très Grande">Très Grande</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="luck">Luck du Personnage</label>
+                                    <input type="number" id="luck" class="form-control" placeholder="Ex: 1500, 25000, 100000..." min="0" required>
+                                    <small class="form-hint">Valeur de Luck de votre personnage (illimitée)</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="charges">Charges Utilisées</label>
+                                    <input type="number" id="charges" class="form-control" placeholder="Nombre de charges" min="1" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="tokens">Tokens Obtenus</label>
+                                    <input type="number" id="tokens" class="form-control" placeholder="Tokens reçus" min="0" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                ✅ Ajouter l'entrée
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h2>Historique des Entrées</h2>
+                        <div class="table-container">
+                            <table class="data-table" id="historyTable">
+                                <thead>
+                                    <tr>
+                                        <th>Date/Heure</th>
+                                        <th>Taille Map</th>
+                                        <th>Luck</th>
+                                        <th>Charges</th>
+                                        <th>Tokens</th>
+                                        <th>Ratio</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyTableBody">
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Statistiques -->
+                <div id="statistiques" class="tab-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="totalRuns">0</div>
+                                <div class="stat-label">Total Runs</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🪙</div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="totalTokens">0</div>
+                                <div class="stat-label">Total Tokens</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="totalCharges">0</div>
+                                <div class="stat-label">Total Charges</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="avgRatio">0</div>
+                                <div class="stat-label">Ratio Moyen</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Moyennes par Taille de Map</h2>
+                        <div class="table-container">
+                            <table class="data-table" id="mapStatsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Taille</th>
+                                        <th>Nombre de Runs</th>
+                                        <th>Tokens Moyens</th>
+                                        <th>Charges Moyennes</th>
+                                        <th>Ratio Moyen</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mapStatsTableBody">
+                                    <!-- Stats will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Statistiques de Luck</h2>
+                        <div class="luck-stats">
+                            <div class="luck-stat">
+                                <span class="luck-label">Luck Minimum :</span>
+                                <span class="luck-value" id="minLuck">-</span>
+                            </div>
+                            <div class="luck-stat">
+                                <span class="luck-label">Luck Maximum :</span>
+                                <span class="luck-value" id="maxLuck">-</span>
+                            </div>
+                            <div class="luck-stat">
+                                <span class="luck-label">Luck Moyenne :</span>
+                                <span class="luck-value" id="avgLuck">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Analyse -->
+                <div id="analyse" class="tab-content">
+                    <div class="section">
+                        <h2>Analyse par Tranches de Luck</h2>
+                        <div class="table-container">
+                            <table class="data-table" id="luckRangesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Tranche de Luck</th>
+                                        <th>Nombre de Runs</th>
+                                        <th>Tokens Moyens</th>
+                                        <th>Ratio Moyen</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="luckRangesTableBody">
+                                    <!-- Analysis will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Calculateur de Prédiction</h2>
+                        <div class="prediction-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="predLuck">Luck</label>
+                                    <input type="number" id="predLuck" class="form-control" placeholder="Votre luck" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="predCharges">Charges</label>
+                                    <input type="number" id="predCharges" class="form-control" placeholder="Charges prévues" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="predMapSize">Taille Map</label>
+                                    <select id="predMapSize" class="form-control">
+                                        <option value="">Sélectionner...</option>
+                                        <option value="Petite">Petite</option>
+                                        <option value="Moyenne">Moyenne</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Très Grande">Très Grande</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="calculatePrediction">
+                                🔮 Calculer la Prédiction
+                            </button>
+                            <div class="prediction-result" id="predictionResult">
+                                <!-- Prediction result will appear here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Conseils d'Optimisation</h2>
+                        <div class="optimization-tips" id="optimizationTips">
+                            <p>Ajoutez des données pour recevoir des conseils d'optimisation personnalisés.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            ✅ Entrée ajoutée avec succès !
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
